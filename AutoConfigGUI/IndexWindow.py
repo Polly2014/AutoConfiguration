@@ -294,3 +294,47 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
             return
         else:
             self.ledt_data_PRE.setText('{}'.format(dir_choose))
+    
+    @pyqtSlot()
+    def on_btn_mass_v2u_clicked(self):
+        select_items = list(self.list_mass_variable.selectedItems())
+        if len(select_items)==0:
+            return
+        else:
+            for i in select_items:
+                item_no = self.list_mass_variable.row(i)
+                item = self.list_mass_variable.takeItem(item_no)
+                self.list_mass_unselect.addItem(item)
+    
+    @pyqtSlot()
+    def on_btn_mass_u2v_clicked(self):
+        select_items = list(self.list_mass_unselect.selectedItems())
+        if len(select_items)==0:
+            return
+        else:
+            for i in select_items:
+                item_no = self.list_mass_unselect.row(i)
+                item = self.list_mass_unselect.takeItem(item_no)
+                self.list_mass_variable.addItem(item)
+    
+    @pyqtSlot()
+    def on_btn_mass_f2u_clicked(self):
+        select_items = list(self.list_mass_fixed.selectedItems())
+        if len(select_items)==0:
+            return
+        else:
+            for i in select_items:
+                item_no = self.list_mass_fixed.row(i)
+                item = self.list_mass_fixed.takeItem(item_no)
+                self.list_mass_unselect.addItem(item)
+    
+    @pyqtSlot()
+    def on_btn_mass_u2f_clicked(self):
+        select_items = list(self.list_mass_unselect.selectedItems())
+        if len(select_items)==0:
+            return
+        else:
+            for i in select_items:
+                item_no = self.list_mass_unselect.row(i)
+                item = self.list_mass_unselect.takeItem(item_no)
+                self.list_mass_fixed.addItem(item)
