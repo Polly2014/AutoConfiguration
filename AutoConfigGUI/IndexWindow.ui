@@ -241,7 +241,12 @@
                 </property>
                 <property name="icon">
                  <iconset resource="Resource/qrcs/icons.qrc">
-                  <normaloff>:/icons/show.ico</normaloff>:/icons/show.ico</iconset>
+                  <normaloff>:/icons/hide.ico</normaloff>
+                  <activeon>:/icons/show.ico</activeon>
+                  <selectedon>:/icons/show.ico</selectedon>:/icons/hide.ico</iconset>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
                 </property>
                 <property name="autoDefault">
                  <bool>false</bool>
@@ -419,6 +424,14 @@
                 <property name="text">
                  <string>Biology</string>
                 </property>
+                <property name="icon">
+                 <iconset resource="Resource/qrcs/icons.qrc">
+                  <normaloff>:/icons/hide.ico</normaloff>
+                  <normalon>:/icons/show.ico</normalon>:/icons/hide.ico</iconset>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -538,6 +551,14 @@
                <widget class="QPushButton" name="btn_cfg_mass">
                 <property name="text">
                  <string>Mass</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="Resource/qrcs/icons.qrc">
+                  <normaloff>:/icons/hide.ico</normaloff>
+                  <normalon>:/icons/show.ico</normalon>:/icons/hide.ico</iconset>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -867,5 +888,54 @@
  <resources>
   <include location="Resource/qrcs/icons.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btn_cfg_data</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_data</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>45</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>45</x>
+     <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_cfg_biology</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_biology</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>235</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>102</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_cfg_mass</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_mass</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>409</x>
+     <y>362</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>393</x>
+     <y>381</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

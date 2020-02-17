@@ -10,10 +10,10 @@ from PyQt5.QtWidgets import *
 from Ui_IndexWindow import Ui_IndexWindow
 
 import plugins
-import sys, os
-from Config import *
-from ConfigFile import *
-from ConfigUI import *
+import os
+from MSConfig import *
+from MSConfigFile import *
+from MSConfigUi import *
 import configparser
 import tempfile
 
@@ -45,20 +45,11 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
         self.core_buttons = [self.btn_import,  self.btn_export]
         self.check_registered(self.cpu_number)
         
-        # 声名各配置文件的配置/文本转换类
-        self.config_option_data = ConfigOptionData()
-        
         # 配置文件列表
-        self.file_list = ['config_1.txt']
-        self.config_list = [ConfigOne, ConfigTwo]
-        self.config_file_list = [ConfigFileOne, ConfigFileTwo]
-        self.config_ui_list = [ConfigUIOne, ConfigUITwo]
-        self.c_list = []
- 
-    
-    def set_cpu_no(self):
-        cpu_no = plugins.get_cpu_number()
-        self.lbl_cpu_no.setText(self.lbl_cpu_no.text()+cpu_no)
+        self.config_list = [
+            ['config_1.txt', CConfigOne, CConfigFileOne, CConfigUiOne], 
+            # ['config_2.txt', ConfigTwo, ConfigFileTwo, ConfigUITwo]
+        ]
     
     def check_registered(self, cpu_number):
         result = plugins.check_registered(cpu_number)
@@ -127,40 +118,30 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
         if not os.path.exists(path_configs):
             QMessageBox.warning(self, '警告', '无可供导入的配置文件，请先尝试重新导入', QMessageBox.Yes)
             return
-        configs = os.listdir(path_configs)
-        configs = list(filter(lambda c:c in self.file_list, configs))
-        
-        # ConfigOne配置文件读取
-        
-        
-        for i in range(len(configs)):
-            config = self.config_list[i]()
-            config_file = self.config_file_list[i]()
-            config_ui = self.config_ui_list[i]()
+        name_configs = os.listdir(path_configs)
+        self.config_list = list(filter(lambda c: c[0] in name_configs, self.config_list))
+
+        for config in self.config_list:
+            cconfig = config[1]()
+            cconfig_file = config[2]()
+            cconfig_ui = config[3]()
             
-            config_file_name = os.path.join(path_configs, configs[i])
-            config = config_file.file2config(config_file_name, config)
+            config_file_name = os.path.join(path_configs, config[0])
             
-            config_ui.update2ui(self, config)
-            self.c_list.append(config)
+            cconfig_file.file2config(config_file_name, cconfig)
+            cconfig_ui.config2ui(self, cconfig)
         QMessageBox.information(self, 'Success', 'Config File Load Success!', QMessageBox.Yes)
+        
         return
-        exit(1)
+        # Config配置文件读取
         with open(file_name, 'r') as f:
             config_string = f.read().replace('# ',  '')
         with  tempfile.NamedTemporaryFile(delete=False) as tmp_file:
             tmp_file.write(config_string.encode())
         config = configparser.ConfigParser()
         config.read(tmp_file.name, encoding='utf-8')
-        config_string_list = config.sections()
-        if 'data' in config_string_list:
-            self.config_data = self.config_option_data.string2config(config)
-    
-            self.ledt_data_1.setText(self.config_data.TYPE_MS2)
-            self.ledt_data_2.setText(self.config_data.PATH_MS2)
-            self.ledt_data_3.setText(self.config_data.PATH_FASTA)
-            self.ledt_data_4.setText(self.config_data.PATH_FASTA_EXPORT)
-            self.ledt_data_5.setText(self.config_data.PATH_RESULT_EXPORT)
+        config.sections()
+        
         
 
     @pyqtSlot()
@@ -206,6 +187,8 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
         else:
             self.widget.setVisible(False)
     
+    
+    '''
     @pyqtSlot(bool)
     def on_btn_cfg_data_toggled(self, checked):
         if checked:
@@ -234,6 +217,7 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
             self.frame_mass.show()
         else:
             self.frame_mass.hide()
+    '''
     
     @pyqtSlot()
     def on_btn_mass_del_clicked(self):
