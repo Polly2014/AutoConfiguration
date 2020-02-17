@@ -24,6 +24,8 @@ class Register(QDialog, Ui_Register):
         """
         super(Register, self).__init__(parent)
         self.setupUi(self)
+        
+        self.result = {'code':-1, 'message': 'Not Regist Yet'}
     
     @pyqtSlot()
     def on_btn_submit_clicked(self):
@@ -41,13 +43,18 @@ class Register(QDialog, Ui_Register):
             self.ledt_email.setFocus()
             return
         pay_load = {'sn':sn, 'username':username, 'email':email}
-        result = plugins.register(pay_load)
-        if result['code']==0:
-            QMessageBox.information(self, 'Success', 'Regist scucess, enjoy it!', QMessageBox.Yes)
-            self.close()
-        elif result['code']==-1:
+        self.result = plugins.register(pay_load)
+        if self.result['code']==0:
+            key = self.result['message']['license']
+            self.result = plugins.update_license(key)
+            if self.result['code']==0:
+                QMessageBox.information(self, 'Success', 'Regist success, enjoy it!', QMessageBox.Yes)
+                self.close()
+            else:
+                QMessageBox.information(self, 'Failed', 'Regist success, but update license faild!', QMessageBox.Yes)
+                return
+        elif self.result['code']==-1:
             QMessageBox.information(self, 'Failed', 'Regist failed, please check your network!', QMessageBox.Yes)
-            self.close()
             return
         else:
             pass

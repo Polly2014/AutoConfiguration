@@ -5,7 +5,7 @@ from plugins import License
 
 app = Flask(__name__)
 
-license = License('lksjfoianfoijwef')
+license = License('irj32oinj0af08hf0wajfoieajf')
 
 
 @app.route('/regist', methods=['POST', 'GET'])

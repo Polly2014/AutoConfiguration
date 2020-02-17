@@ -86,15 +86,29 @@ def check_registered(cpu_number):
         result['message'] = 'No cfg.ini File, Create it!'
     return result
 
+def update_license(license_number):
+    result = {'code':0, 'message': 'Regist and Update License Success!'}
+    conf = configparser.ConfigParser()
+    try:
+        conf.read('cfg.ini',  encoding='utf-8')
+        conf.set('license', 'key', license_number)
+        conf.write(open('cfg.ini',  'w'))
+    except Exception as e:
+        result['code'] = -1
+        result['message'] = 'Update License Error: {}'.format(e)
+    return result
+
 def register(pay_load):
     result = {'code':0, 'message':'Regist Success!'}
     try:
-        response = requests.get('localhost', params=pay_load, timeout=2)
-        result['message'] = response.text
+        response = requests.get('http://localhost/regist', params=pay_load, timeout=2)
+        result['message'] = response.json()
     except Exception as e:
         result = {'code':-1, 'message': '{}'.format(e)}
     return result
 
 if __name__=='__main__':
     license = License()
-    print(license.make_license(get_cpu_number()))
+    # print(license.make_license(get_cpu_number()))
+    pay_load = {'sn': license.make_license(get_cpu_number()), 'username': 'polly', 'email': 'test@test.com'}
+    print(register(pay_load))

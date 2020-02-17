@@ -81,9 +81,18 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
         self.pbar_status.setRange(0,  0)
         
         # 加载并初始化注册界面
-        self.register = Register()
-        self.register.show()
-        self.register.ledt_number.setText(self.cpu_number)
+        register = Register(self)
+        register.ledt_number.setText(self.cpu_number)
+        code = register.exec_()
+        
+        if register.result['code']==0:
+            self.setWindowTitle('AutoConfiguration(已授权)')
+            self.btn_get_license.hide()
+            for btn in self.core_buttons:
+                btn.setEnabled(True)
+            self.lbl_status.setText('运行状态')
+            self.pbar_status.setRange(0,  100)
+        print("Code: {}".format(code))
 
     @pyqtSlot()
     def on_btn_export_clicked(self):
