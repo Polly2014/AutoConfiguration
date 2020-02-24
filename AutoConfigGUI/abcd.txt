@@ -1,3 +1,0 @@
-PATH:E:/Polly/Eric_Workspace/AutoConfigGUI/__pycache__
-ITEM:File-2
-ITEMLIST:项目3,项目5,选项2
