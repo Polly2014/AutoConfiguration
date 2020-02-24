@@ -1,6 +1,6 @@
 <RCC>
   <qresource prefix="icons">
-    <file>hide.ico</file>
-    <file>show.ico</file>
+    <file>icon_hide.ico</file>
+    <file>icon_show.ico</file>
   </qresource>
 </RCC>

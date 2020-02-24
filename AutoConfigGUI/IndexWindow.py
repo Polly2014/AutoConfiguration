@@ -47,12 +47,14 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
         
         # 配置文件列表
         self.config_list = [
+            ['config_common.txt',  CConfigCommon,  CConfigFileCommon,  CConfigUiCommon], 
             ['config_1.txt', CConfigOne, CConfigFileOne, CConfigUiOne], 
             # ['config_2.txt', ConfigTwo, ConfigFileTwo, ConfigUITwo]
         ]
     
     def check_registered(self, cpu_number):
         result = plugins.check_registered(cpu_number)
+        print(result)
         if result['code']==1:
             QMessageBox.warning(self,  '警告',  '您的软件尚未授权，请尽快注册！', QMessageBox.Yes)
             self.setWindowTitle('AutoConfiguration(未授权)')
@@ -88,7 +90,7 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
     @pyqtSlot()
     def on_btn_export_clicked(self):
         
-        if len(self.c_list)==0:
+        if len(self.config_list)==0:
             QMessageBox.warning(self, '消息', '无可供导出的配置文件，请先尝试导入', QMessageBox.Yes)
             return
         file_name, file_type = QFileDialog.getSaveFileName(self, '文件保存', self.cwd, 'Text Files(*.txt)')
@@ -98,14 +100,18 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
             path_configs = os.path.join(os.path.dirname(file_name), 'params')
             if not os.path.exists(path_configs):
                 os.makedirs(path_configs)
-            with open(file_name, 'w+') as f:
+            with open(file_name, 'w') as f:
                 f.write('')
-            for i in range(len(self.c_list)):
-                config = self.c_list[i]
-                config_file = self.config_file_list[i]()
+            for config in self.config_list:
+                cconfig = config[1]()
+                cconfig_file = config[2]()
+                cconfig_ui = config[3]()
                 
-                file_path_name = os.path.join(path_configs, self.file_list[i])
-                config_file.config2file(file_path_name, config)
+                config_file_name = os.path.join(path_configs, config[0])
+                
+                cconfig_ui.ui2config(self, cconfig)
+                cconfig_file.config2file(config_file_name, cconfig)
+                
             QMessageBox.information(self, '消息', '保存成功', QMessageBox.Yes)
 
     @pyqtSlot()
@@ -338,3 +344,46 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
                 item_no = self.list_mass_unselect.row(i)
                 item = self.list_mass_unselect.takeItem(item_no)
                 self.list_mass_fixed.addItem(item)
+    
+    @pyqtSlot()
+    def on_btn_common_PM_clear_clicked(self):
+        self.list_common_PM.clear()
+    
+    @pyqtSlot()
+    def on_btn_common_PM_add_clicked(self):
+        file_names, file_type = QFileDialog.getOpenFileNames(self, 'Files select', self.cwd, 'All Type Files(*)')
+        if len(file_names)==0:
+            return
+        for file_name in file_names:
+            self.list_common_PM.addItem(file_name)
+        
+    
+    @pyqtSlot()
+    def on_btn_common_PM_del_clicked(self):
+        select_items = list(self.list_common_PM.selectedItems())
+        if len(select_items)==0:
+            return
+        else:
+            for i in select_items:
+                item_no = self.list_common_PM.row(i)
+                self.list_common_PM.takeItem(item_no)
+    
+    @pyqtSlot()
+    def on_btn_common_PRE_clicked(self):
+        dir_choose = QFileDialog.getExistingDirectory(self, 'Directory Select', self.cwd)
+        if dir_choose == '':
+            return
+        else:
+            self.ledt_common_PRE.setText('{}'.format(dir_choose))
+    
+    @pyqtSlot()
+    def on_btn_common_PF_clicked(self):
+        file_name, file_type = QFileDialog.getOpenFileName(self, 'PATH_FASTA File Select', self.cwd, 'All Type Files(*)')
+        if not os.path.exists(file_name) or file_name=='':
+            return
+        self.ledt_common_PF.setText('{}'.format(file_name))
+    
+    @pyqtSlot(str)
+    def on_cbox_common_TM_currentIndexChanged(self, p0):
+        print(type(p0))
+        print(type(str(p0)))
