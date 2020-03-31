@@ -6,11 +6,13 @@ Module implementing IndexWindow.
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QColor
 
 from Ui_IndexWindow import Ui_IndexWindow
 
 import plugins
 import os
+import re
 from MSConfig import *
 from MSConfigFile import *
 from MSConfigUi import *
@@ -27,6 +29,8 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
         
         self.cwd = os.getcwd()
         self.anchor_file_name = ''
+        self.color_warning = QColor(255, 0, 0)
+        self.color_normal = QColor(255, 255, 255)
         
         try:
             self.cpu_number = plugins.get_cpu_number()
@@ -59,6 +63,7 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
             QMessageBox.information(self,  'Welcome',  '您的软件已授权，请尽情使用！', QMessageBox.Yes)
             self.btn_get_license.hide()
             self.btn_save.setEnabled(False)
+            self.btn_run.setEnabled(False)
 
     @pyqtSlot()
     def on_btn_get_license_clicked(self):
@@ -163,12 +168,39 @@ class IndexWindow(QMainWindow, Ui_IndexWindow):
 
     @pyqtSlot()
     def on_btn_run_clicked(self):
+        os.system('notepad.exe {}'.format(self.anchor_file_name))
         pass
+    
+    def check_row(self, table, row, value, value_rule=None):
+        table.setItem(row, 1, QTableWidgetItem(value))
+        flag = re.match(re.compile(value_rule), value) if value_rule else True
+        color = self.color_normal if flag else self.color_warning
+        for i in range(2):
+            table.item(row, i).setBackground(color)
+        return 0 if flag else 1
+    
+    def chek_pannels(self):
+        num_error = 0
+        # Pannel One
+        item_cfg1_TM = self.cbox_cfg1_TM.currentText()
+        num_error += self.check_row(self.tbl_cfg1, 0, item_cfg1_TM, r'(raw)|(ms1)|(mgf)')
+        item_num = self.list_cfg1_PM.count()
+        item_cfg1_PM =  '|'.join([self.list_cfg1_PM.item(i).text() for i in range(item_num)])
+        num_error += self.check_row(self.tbl_cfg1, 1, item_cfg1_PM, r'.+')
+        item_cfg1_PF = self.ledt_cfg1_PF.text()
+        num_error += self.check_row(self.tbl_cfg1, 2, item_cfg1_PF, r'.+')
+        item_cfg1_PRE = self.ledt_cfg1_PRE.text()
+        num_error += self.check_row(self.tbl_cfg1, 3, item_cfg1_PRE, r'.+')
+        return num_error
     
     # Summary 选项卡点击时，自动检查所有字段拼写
     @pyqtSlot(int)
     def on_tab_box_currentChanged(self, index):
         if index==2:
+            num_error = self.chek_pannels()
+            if num_error==0:
+                self.btn_run.setEnabled(True)
+            # self.tbl_cfg1.item(0, 0).setBackground(self.color_warning)
             pass
             # self.tbl_cfg1.setItem(0, 1, QTableWidgetItem('Polly'))
         

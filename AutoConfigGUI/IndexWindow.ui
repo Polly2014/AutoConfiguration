@@ -125,7 +125,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -329,7 +329,7 @@
                  </widget>
                 </item>
                 <item row="4" column="3">
-                 <widget class="QPushButton" name="btn_cfg_1_PF">
+                 <widget class="QPushButton" name="btn_cfg1_PF">
                   <property name="text">
                    <string>Browser</string>
                   </property>
@@ -1601,8 +1601,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>805</width>
-             <height>503</height>
+             <width>265</width>
+             <height>468</height>
             </rect>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_9">
