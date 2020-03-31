@@ -14,7 +14,7 @@ class configFileBase():
                setattr(config, k, v)
         return config 
 
-class CConfigFileCommon():
+class CConfigFileOne():
     def config2file(self, path, config):
         c = AutoConfigParser()
         # [Basic Options]
@@ -65,7 +65,7 @@ class CConfigFileCommon():
         config.m_z = c.get('About pXtract',  'm/z')
         return config
 
-class CConfigFileOne():
+class CConfigFileTwo():
     def config2file(self, path, config):
         c = AutoConfigParser()
         # [data]
@@ -169,7 +169,7 @@ class CConfigFileOne():
     def test(self):
         print('Ha')
         
-class CConfigFileTwo():
+class CConfigFileThree():
     def config2file(self, path, config):
         with open(path,  'w') as f:
             config.write(f)

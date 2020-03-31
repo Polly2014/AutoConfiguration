@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class CConfigCommon(object):
+class CConfigOne(object):
     # [Basic Options]
     datanum='1'
     datapath_list=[]
@@ -34,7 +34,11 @@ class CConfigCommon(object):
     m_z='5'
     Intensity='1'
 
-class CConfigOne(object):
+class CConfigTwo(object):
+    def __init__(self, based_config=None):
+        if based_config:
+            self.TYPE_MS2 = based_config.input_format
+            self.PATH_MS2 = 'Polly'
     # Data
     TYPE_MS2 = ''
     PATH_MS2 = ''
@@ -98,7 +102,7 @@ class CConfigOne(object):
     PATH_INI_MOD='./ini/modification.ini'
 
 
-class CConfigTwo(object):
+class CConfigThree(object):
     # Data
     TYPE_MS2 = ''
     PATH_MS2 = ''
