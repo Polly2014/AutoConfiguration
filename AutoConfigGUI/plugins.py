@@ -107,7 +107,7 @@ def update_license(license_number):
 def register(pay_load):
     result = {'code':0, 'message':'Regist Success!'}
     try:
-        response = requests.get('http://localhost/regist', params=pay_load, timeout=2)
+        response = requests.get('http://uaalink.com/regist', params=pay_load, timeout=2)
         result['message'] = response.json()
     except Exception as e:
         result = {'code':-1, 'message': '{}'.format(e)}
