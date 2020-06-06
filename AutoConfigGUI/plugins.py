@@ -35,7 +35,7 @@ def get_cpu_number():
 	return cpu.ProcessorId.strip()
 
 class License(object):
-    def __init__(self, key='irj32oinj0af08hf0wajfoieajf'):
+    def __init__(self, key='26716201@qq.com'):
         if len(key) > 32:
             key = key[:32]
         self.key = self.to_16(key)

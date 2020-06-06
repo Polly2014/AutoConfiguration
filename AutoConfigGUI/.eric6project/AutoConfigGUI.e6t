@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Tasks SYSTEM "Tasks-6.0.dtd">
 <!-- eric6 tasks file for project AutoConfigGUI -->
-<!-- Saved: 2020-02-23, 13:30:35 -->
+<!-- Saved: 2020-06-06, 18:10:18 -->
 <Tasks version="6.0">
   <ProjectScanFilter></ProjectScanFilter>
+  <Task priority="1" completed="False" type="1" uid="{a35d71c7-fd7a-4070-a753-1a411ef962e3}">
+    <Summary>TODO: not implemented yet</Summary>
+    <Description></Description>
+    <Created>2020-06-06, 18:02:16</Created>
+    <Resource>
+      <Filename>tmp.py</Filename>
+      <Linenumber>37</Linenumber>
+    </Resource>
+  </Task>
 </Tasks>

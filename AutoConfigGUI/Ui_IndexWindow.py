@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\Polly\Eric_Workspace\AutoConfigGUI\IndexWindow.ui'
+# Form implementation generated from reading ui file '/Users/polly/Downloads/GitHub_Workspace/AutoConfiguration/AutoConfigGUI/IndexWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -741,7 +741,7 @@ class Ui_IndexWindow(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollArea_3.setObjectName("scrollArea_3")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 805, 503))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 265, 468))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents_3)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")

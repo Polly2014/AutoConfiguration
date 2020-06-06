@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-5.1.dtd">
 <!-- eric project file for project AutoConfigGUI -->
-<!-- Saved: 2020-03-31, 01:24:32 -->
+<!-- Saved: 2020-06-06, 18:10:18 -->
 <!-- Copyright (C) 2020 Polly, 26716201@qq.com -->
 <Project version="5.1">
   <Language>en_US</Language>
@@ -17,20 +17,17 @@
     <Source>MSConfig.py</Source>
     <Source>MSConfigFile.py</Source>
     <Source>MSConfigUi.py</Source>
-    <Source>MainWindow.py</Source>
     <Source>Register.py</Source>
     <Source>Ui_IndexWindow.py</Source>
-    <Source>Ui_MainWindow.py</Source>
     <Source>Ui_Register.py</Source>
+    <Source>Ui_tmp.py</Source>
     <Source>__init__.py</Source>
     <Source>icons_rc.py</Source>
     <Source>main.py</Source>
     <Source>plugins.py</Source>
-    <Source>tmp.py</Source>
   </Sources>
   <Forms>
     <Form>IndexWindow.ui</Form>
-    <Form>MainWindow.ui</Form>
     <Form>Register.ui</Form>
   </Forms>
   <Vcs>
