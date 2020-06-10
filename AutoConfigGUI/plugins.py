@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from Crypto.Cipher import AES
-import wmi
+# import wmi
+import uuid
 import base64
 import os
 import configparser
 import requests
+
 
 def config2string(config):
     str = '# [data]\n'
@@ -15,24 +17,31 @@ def config2string(config):
     str += 'PATH_FASTA_EXPORT={}\n'.format(config.PATH_FASTA_EXPORT)
     str += 'PATH_RESULT_EXPORT={}\n'.format(config.PATH_RESULT_EXPORT)
     return str
-    
+
+
 def txt2config():
     pass
+
 
 class AutoConfigParser(configparser.ConfigParser):
     def optionxform(self, optionstr):
         return optionstr
-        
+
     def remove_note(self):
         section_list = self.sections()
         for section in section_list:
             for k, v in self.items(section):
                 self.set(section, k, v.split('#', 1)[0].strip())
 
-def get_cpu_number():
-	c = wmi.WMI()
-	cpu = c.Win32_Processor()[0]
-	return cpu.ProcessorId.strip()
+# def get_mac_address():
+#   c = wmi.WMI()
+#   cpu = c.Win32_Processor()[0]
+#   return cpu.ProcessorId.strip()
+
+
+def get_mac_address():
+    return uuid.uuid1().hex[-12:].upper()
+
 
 class License(object):
     def __init__(self, key='26716201@qq.com'):
@@ -60,18 +69,18 @@ class License(object):
             text, encoding='utf-8'))).rstrip(b'\0').decode("utf-8"))  # 解密
 
 
-def check_registered(cpu_number):
-    result = {'code':0,  'message': 'Already Registered!'}
+def check_registered(mac_address):
+    result = {'code': 0, 'message': 'Already Registered!'}
     conf = configparser.ConfigParser()
     if os.path.exists('cfg.ini'):
-        conf.read('cfg.ini',  encoding='utf-8')
+        conf.read('cfg.ini', encoding='utf-8')
         if 'license' in conf.sections():
             properties = [item[0] for item in conf.items('license')]
             if 'key' in properties and 'host' in properties:
-                if cpu_number==conf.get('license',  'host'):
+                if mac_address == conf.get('license', 'host'):
                     license = License()
-                    key_real = license.make_license(cpu_number)
-                    if not key_real==conf.get('license',  'key'):
+                    key_real = license.make_license(mac_address)
+                    if not key_real == conf.get('license', 'key'):
                         result['code'] = 1
                         result['message'] = 'Not Registered Yet!'
                 else:
@@ -85,36 +94,42 @@ def check_registered(cpu_number):
             result['message'] = 'Error, File cfg.ini has been modified!'
     else:
         conf.add_section('license')
-        conf.set('license',  'host',  cpu_number)
-        conf.set('license',  'key',  '')
-        conf.write(open('cfg.ini',  'w'))
+        conf.set('license', 'host', mac_address)
+        conf.set('license', 'key', '')
+        conf.write(open('cfg.ini', 'w'))
         result['code'] = 2
         result['message'] = 'No cfg.ini File, Create it!'
     return result
 
+
 def update_license(license_number):
-    result = {'code':0, 'message': 'Regist and Update License Success!'}
+    result = {'code': 0, 'message': 'Regist and Update License Success!'}
     conf = configparser.ConfigParser()
     try:
-        conf.read('cfg.ini',  encoding='utf-8')
+        conf.read('cfg.ini', encoding='utf-8')
         conf.set('license', 'key', license_number)
-        conf.write(open('cfg.ini',  'w'))
+        conf.write(open('cfg.ini', 'w'))
     except Exception as e:
         result['code'] = -1
         result['message'] = 'Update License Error: {}'.format(e)
     return result
 
+
 def register(pay_load):
-    result = {'code':0, 'message':'Regist Success!'}
+    result = {'code': 0, 'message': 'Regist Success!'}
     try:
-        response = requests.get('http://uaalink.com/regist', params=pay_load, timeout=2)
+        response = requests.get(
+            'http://uaalink.com/regist', params=pay_load, timeout=2)
         result['message'] = response.json()
     except Exception as e:
-        result = {'code':-1, 'message': '{}'.format(e)}
+        result = {'code': -1, 'message': '{}'.format(e)}
     return result
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     license = License()
-    # print(license.make_license(get_cpu_number()))
-    pay_load = {'sn': license.make_license(get_cpu_number()), 'username': 'polly', 'email': 'test@test.com'}
-    print(register(pay_load))
+    print(get_mac_address())
+    print(license.make_license(get_mac_address()))
+    # pay_load = {'sn': license.make_license(
+    #     get_mac_address()), 'username': 'polly', 'email': 'test@test.com'}
+    # print(register(pay_load))

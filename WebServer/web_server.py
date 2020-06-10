@@ -39,8 +39,8 @@ def regist():
         data['message'] = 'SN number Exist!'
         print('SN number Exist!')
     else:
-        li = LicenseInfo(sn=sn, username=username,
-                         email=email, license=data['license'])
+        li = (sn=sn, username=username,
+              email=email, license=data['license'])
         db.session.add(li)
         db.session.commit()
         print('[{}] License Info Insert to DB Success'.format(sn))
